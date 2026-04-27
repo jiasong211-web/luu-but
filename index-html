@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lưu bút của tôi</title>
+  <style>
+    body {
+      font-family: Arial;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    input, textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+    }
+    .note {
+      background: white;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>📖 Lưu bút</h1>
+
+  <input id="name" placeholder="Tên của bạn">
+  <textarea id="message" placeholder="Viết gì đó..."></textarea>
+  <button onclick="addNote()">Gửi</button>
+
+  <div id="notes"></div>
+
+  <script>
+    let notes = JSON.parse(localStorage.getItem("notes")) || [];
+
+    function render() {
+      let html = "";
+      notes.slice().reverse().forEach(n => {
+        html += `<div class="note">
+          <b>${n.name}</b>
+          <p>${n.message}</p>
+        </div>`;
+      });
+      document.getElementById("notes").innerHTML = html;
+    }
+
+    function addNote() {
+      const name = document.getElementById("name").value;
+      const message = document.getElementById("message").value;
+
+      if (!name || !message) return;
+
+      notes.push({ name, message });
+      localStorage.setItem("notes", JSON.stringify(notes));
+
+      document.getElementById("name").value = "";
+      document.getElementById("message").value = "";
+
+      render();
+    }
+
+    render();
+  </script>
+</body>
+</html>
